@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GeekShopping.ProductAPI.Migrations
 {
     [DbContext(typeof(MySQLContext))]
-    [Migration("20240603173238_AddProductDataTableOnDB")]
+    [Migration("20240603195521_AddProductDataTableOnDB")]
     partial class AddProductDataTableOnDB
     {
         /// <inheritdoc />
@@ -32,6 +32,12 @@ namespace GeekShopping.ProductAPI.Migrations
                         .HasColumnName("id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("category_name");
 
                     b.Property<string>("Description")
                         .IsRequired()

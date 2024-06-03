@@ -30,6 +30,12 @@ namespace GeekShopping.ProductAPI.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("category_name");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
