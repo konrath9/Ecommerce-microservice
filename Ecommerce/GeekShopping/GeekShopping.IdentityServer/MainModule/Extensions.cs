@@ -4,6 +4,7 @@
 
 using System;
 using Duende.IdentityServer.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServerHost.Quickstart.UI
@@ -26,6 +27,20 @@ namespace IdentityServerHost.Quickstart.UI
             controller.HttpContext.Response.Headers["Location"] = "";
             
             return controller.View(viewName, new RedirectViewModel { RedirectUrl = redirectUri });
+        }
+
+        public static async Task<bool> GetSchemeSupportsSignOutAsync(this HttpContext context, string scheme)
+        {
+            var schemeProvider = context.RequestServices.GetRequiredService<IAuthenticationSchemeProvider>();
+            var schemeInfo = await schemeProvider.GetSchemeAsync(scheme);
+
+            if (schemeInfo?.HandlerType != null)
+            {
+                var handler = context.RequestServices.GetService(schemeInfo.HandlerType) as IAuthenticationSignOutHandler;
+                return handler != null;
+            }
+
+            return false;
         }
     }
 }
